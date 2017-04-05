@@ -1,4 +1,5 @@
 var instruct=document.querySelectorAll(".instruct");
+var p5=document.querySelector("#p5");
 var gameboard=document.querySelector(".board");
 var playBtn=document.querySelector("#playBtn");
 var quitBtn=document.querySelector("#quitBtn");
@@ -71,10 +72,14 @@ function generatePuzzle(puzzle, hint){
     }
   }
   hintPara.innerHTML=hint;
+  //Display gameboard fields
+  guessInput.style.visibility="visible";
+  guessBtn.style.visibility="visible";
+  hintPara.style.visibility="visible";
   return words.length;
 }
 
-//  deleteshtml elements in gameboard
+//  deletes html elements in gameboard
 function removePuzzle(refLength){
   for (var count=0; count<refLength; count++){
     var wordID="word"+Number(count+1);
@@ -85,8 +90,15 @@ function removePuzzle(refLength){
 
 function revealLetter(guess){
   var letterTile=document.querySelectorAll("."+guess);
-  for(count=0; count<letterTile.length; count++){
-    letterTile[count].classList.add("reveal");
+  console.log("no letter"+letterTile.length);
+  if (letterTile.length==0){
+    guessBtn.classList.add("wrong");
+    guessBtn.innerHTML="Guess Again"
+  }
+  else{
+    for(count=0; count<letterTile.length; count++){
+      letterTile[count].classList.add("reveal");
+    }
   }
 }
 
@@ -129,12 +141,13 @@ guessBtn.addEventListener("click", function(){
   console.log("The guess "+guess);
 
   var regExp=/^[a-z]$/i;
+//  Test if input is in correct format
   if(regExp.test(guess)!=true || guess.length!=1){
     error.innerHTML="Please enter single letter only.";
     solveBtn.style.visibility="hidden";
   }
   else{
-    /*  flip over all matching letters and offer user opportunity to solve  */
+    /*  revealetter will test for actual match and flip over all matching letters and offer user opportunity to solve  */
     console.log(revealLetter(guess));
     guessInput.value="";
     solveBtn.style.visibility="visible";
@@ -156,6 +169,11 @@ solveBtn.addEventListener("click", function(){
     alert("you won");
   }
   return guess;
+})
+
+//Once instructions are done show Play button
+p5.addEventListener("animationend", function(event){
+  playBtn.style.visibility="visible";
 })
 
 instructions();
