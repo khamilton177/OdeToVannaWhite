@@ -3,7 +3,9 @@ var gameboard=document.querySelector(".board");
 var playBtn=document.querySelector("#play");
 var quitBtn=document.querySelector("#quit");
 var guessInput=document.querySelector("#guess");
+var error=document.querySelector("#error");
 var guessBtn=document.querySelector("#guessBtn");
+var solveBtn=document.querySelector("#solveBtn");
 var hint=document.querySelector("#hint");
 
 //Create global varialbes
@@ -21,37 +23,37 @@ var phrases={
   },
   phrase3:{
     phrase: "Kiss My Grits",
-    hint: "Pucker up for this menu item at Mel's diner."
+    hint: "Pucker up for this southern dish at Mel's diner."
   },
   phrase4:{
     phrase: "Winning",
-    hint: "Charlie Sheen does it."
+    hint: "Charlie Sheen claims he does it."
   },
   phrase5:{
     phrase: "What Happens in Vegas Stays in Vegas",
-    hint:	"Your secrets are kept here."
+    hint:	"Your secrets are safe here."
   }
 }
 
 function generatePuzzle(puzzle, hint){
   //create new array per word in phrase
   var words= puzzle.split(" ");
-  // console.log(words.length);
   for (count=0; count<words.length; count++){
     var wordID="word"+Number(count+1)
-    //create a div elements per word in phrase
+    //create div elements per word in phrase
     var e=document.createElement("div");
     e.setAttribute("id", wordID);
     e.setAttribute("class", "word");
     gameboard.appendChild(e);
-    //create a div elements per word in phrase
+    //create span elements per letter in word
     var word=words[count];
     var letters=word.split("");
     var wordDiv=document.querySelector("#"+wordID)
     for (count2=0; count2<letters.length; count2++){
       e=document.createElement("span");
-      e.setAttribute("class", "letters");
-      e.innerHTML=letters[count2];
+      var theLetter=letters[count2];
+      e.setAttribute("class", "letters "+theLetter);
+      e.innerHTML=theLetter;
       wordDiv.appendChild(e);
     }
   }
@@ -59,6 +61,7 @@ function generatePuzzle(puzzle, hint){
   return words.length;
 }
 
+//  deleteshtml elements in gameboard
 function removePuzzle(refLength){
   for (var count=0; count<refLength; count++){
     var wordID="word"+Number(count+1);
@@ -67,39 +70,38 @@ function removePuzzle(refLength){
   }
 }
 
+function revealLetter(guess){
+  var letterTile=document.querySelectorAll("."+guess);
+  for(count=0; count<letterTile.length; count++){
+    letterTile[count].classList.add("reveal");
+  }
+}
+
 playBtn.addEventListener("click", function(){
-  // console.log("currentPhrase "+currentPhrase);
   var phrasesLength=Object.keys(phrases);
   phrasesLength=phrasesLength.length;
-  // console.log("phrasesLength "+phrasesLength);
 
   if (currentPhrase=="" || currentPhrase===undefined){
     atIndex=1;
     currentPhrase="phrases.phrase"+atIndex;
-    // console.log("currentPhrase- "+currentPhrase);
   }
   else{
     atIndex+=1;
     if (atIndex<=phrasesLength){
       currentPhrase="phrases.phrase"+atIndex;
-      // console.log("currentPhrase- "+currentPhrase);
     }
     else{
       atIndex=1;
       currentPhrase="phrases.phrase"+atIndex;
-      // console.log("currentPhrase- "+currentPhrase);
     }
     removePuzzle(refLength);
   }
   console.log("currentPhrase- "+currentPhrase);
   var puzzle=currentPhrase+".phrase";
   puzzle=eval(puzzle);
-  // console.log("puzzle- "+puzzle);
   var hint=currentPhrase+".hint";
   hint=eval(hint);
-  // console.log("hint- "+hint);
   refLength=generatePuzzle(puzzle, hint);
-  // console.log("refLength- "+refLength);
   return currentPhrase, atIndex;
 })
 
@@ -109,6 +111,32 @@ quitBtn.addEventListener("click", function(){
 
 guessBtn.addEventListener("click", function(){
   var guess=guessInput.value;
-  // console.log("The guess "+guess);
+  console.log("The guess "+guess);
+
+  var regExp=/^[a-z]$/i;
+  if(regExp.test(guess)!=true || guess.length!=1){
+    error.innerHTML="Please enter single letter only.";
+  }
+  else{
+    /*  flip over all matching letters and offer user opportunity to solve  */
+    guessInput.value="";
+    revealLetter(guess);
+  }
+  return guess;
+})
+
+solveBtn.addEventListener("click", function(){
+  var guess=guessInput.value;
+  guess=guess.toUpperCase();
+  console.log("The guess "+guess);
+
+  var puzzlePhrase=currentPhrase+".phrase";
+  puzzlePhrase=eval(puzzlePhrase);
+  puzzlePhrase=puzzlePhrase.toUpperCase();
+  console.log("puzzlePhrase- "+puzzlePhrase);
+
+  if(puzzlePhrase.includes(guess)){
+    alert("you won");
+  }
   return guess;
 })

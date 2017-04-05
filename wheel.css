@@ -1,13 +1,25 @@
+.instruct{
+  /*visibility: hidden;*/
+}
+
 .word{
   width: auto;
   padding: 10px;
   margin: 10px;
 }
 .letters{
-  width: 100px;
-  height: 100px;
+  /*visibility: hidden;*/
+  width: 500px;
+  height: 500px;
   margin: 10px 2px 50px 0px;
   padding: 5px;
+  font-size: 40px;
   font-family: 'Anton', sans-serif;
   border:2px solid grey;
+  color: white;
+}
+
+.reveal {
+  color: black;
+  animation: flipInY 5s;
 }
