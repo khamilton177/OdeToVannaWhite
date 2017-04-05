@@ -1,12 +1,12 @@
 var instruct=document.querySelectorAll(".instruct");
 var gameboard=document.querySelector(".board");
-var playBtn=document.querySelector("#play");
-var quitBtn=document.querySelector("#quit");
+var playBtn=document.querySelector("#playBtn");
+var quitBtn=document.querySelector("#quitBtn");
 var guessInput=document.querySelector("#guess");
 var error=document.querySelector("#error");
 var guessBtn=document.querySelector("#guessBtn");
 var solveBtn=document.querySelector("#solveBtn");
-var hint=document.querySelector("#hint");
+var hintPara=document.querySelector("#hint");
 
 //Create global varialbes
 var currentPhrase, atIndex, refLength;
@@ -35,6 +35,18 @@ var phrases={
   }
 }
 
+function instructions(){
+  var pID;
+  var num=0;
+  console.log("Length- "+instruct.length);
+  for(var count=0; count<instruct.length; count++){
+    num=num+=1;
+    pID="p"+num;
+    console.log("pID- "+pID);
+    instruct[count].classList.add(pID);
+  }
+}
+
 function generatePuzzle(puzzle, hint){
   //create new array per word in phrase
   var words= puzzle.split(" ");
@@ -52,12 +64,13 @@ function generatePuzzle(puzzle, hint){
     for (count2=0; count2<letters.length; count2++){
       e=document.createElement("span");
       var theLetter=letters[count2];
-      e.setAttribute("class", "letters "+theLetter);
+      var theLetterUpper=theLetter.toUpperCase();
+      e.setAttribute("class", "letters "+theLetterUpper);
       e.innerHTML=theLetter;
       wordDiv.appendChild(e);
     }
   }
-  hint.innerHTML=hint;
+  hintPara.innerHTML=hint;
   return words.length;
 }
 
@@ -101,6 +114,7 @@ playBtn.addEventListener("click", function(){
   puzzle=eval(puzzle);
   var hint=currentPhrase+".hint";
   hint=eval(hint);
+  console.log("hint- "+hint);
   refLength=generatePuzzle(puzzle, hint);
   return currentPhrase, atIndex;
 })
@@ -111,16 +125,19 @@ quitBtn.addEventListener("click", function(){
 
 guessBtn.addEventListener("click", function(){
   var guess=guessInput.value;
+  guess=guess.toUpperCase();
   console.log("The guess "+guess);
 
   var regExp=/^[a-z]$/i;
   if(regExp.test(guess)!=true || guess.length!=1){
     error.innerHTML="Please enter single letter only.";
+    solveBtn.style.visibility="hidden";
   }
   else{
     /*  flip over all matching letters and offer user opportunity to solve  */
+    console.log(revealLetter(guess));
     guessInput.value="";
-    revealLetter(guess);
+    solveBtn.style.visibility="visible";
   }
   return guess;
 })
@@ -140,3 +157,5 @@ solveBtn.addEventListener("click", function(){
   }
   return guess;
 })
+
+instructions();

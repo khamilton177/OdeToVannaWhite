@@ -1,25 +1,121 @@
+body{
+  background-color: #067BC2;
+}
+
+header{
+  width: auto;
+  height: 70px;
+}
+
 .instruct{
-  /*visibility: hidden;*/
+  position: absolute;
+  top: 16px;
+  margin-left: 33%;
+  padding: 20px 40px;
+  border: 1px solid #E2EFDE;
+  border-radius: 40px;
+  text-align: center;
+  font-size: 24px;
+  background-color: #E2EFDE;
+  color: #CF5C36;
+  opacity: 0
+}
+
+#p1{
+  animation: fadeIn 10s;
+}
+
+#p2{
+  animation: fadeIn 5s ease 10s;
+}
+
+#p3{
+  animation: fadeIn 5s ease 15s;
+}
+
+#p4{
+  animation: fadeIn 5s ease 20s;
+}
+
+#p5{
+  animation: fadeIn 5s ease 25s;
+}
+
+#guess{
+  margin-left: 40%;
+}
+
+#playBtn, #guessBtn, #solveBtn{
+    /*visibility: hidden;*/
+    width: 100px;
+    text-align: center;
+    font-family: serif;
+    border: 1px solid white;
+    border-radius: 10px;
+    font-size: 28px;
+}
+
+#playBtn{
+  float: left;
+}
+
+#solveBtn{
+  width: 200px;
+  border-radius: 20px;
+  margin-left: 33%;
+}
+
+#quitBtn{
+  float: right;
+  width: 100px;
+  text-align: center;
+  font-family: serif;
+  border: 1px solid white;
+  border-radius: 10px;
+  font-size: 28px;
 }
 
 .word{
+  display: inline-block;
   width: auto;
   padding: 10px;
   margin: 10px;
 }
+
 .letters{
   /*visibility: hidden;*/
-  width: 500px;
-  height: 500px;
+  display: inline-block;
+  min-width: 50px;
+  height: 50px;
   margin: 10px 2px 50px 0px;
   padding: 5px;
-  font-size: 40px;
+  background-color: #00A878;
+  border:2px solid black;
+  text-align: center;
   font-family: 'Anton', sans-serif;
-  border:2px solid grey;
+  font-size: 40px;
+  color: #00A878;
+}
+
+#hint{
+  margin: 0 10px 10px 10px;
+  width: 400px;
+  margin-left: 33%;
+  padding: 20px;
+  text-align: center;
+  font-family: serif;
+  border: 1px solid white;
+  border-radius: 100px;
+  font-size: 28px;
   color: white;
 }
 
 .reveal {
+  background-color: white;
   color: black;
   animation: flipInY 5s;
+}
+
+footer{
+  padding:50px 100px 10px 100px;
 }

@@ -10,25 +10,26 @@
   <body>
     <div id="container">
       <header>
-        <p id="p1" class="instruct">Guess the letters in the phrase.</p>
-        <BR>
-        <p id="p2" class="instruct">You will receive one hint.</p>
-        <BR>
-        <p i="p3" class="instruct">Enter a letter into the 'Guess' box.</p>
-        <BR>
-        <p id="p4" class="instruct">Click Play to begin game.</p>
+        <p id="p1" class="instruct">Guess the letters in the phrase.<BR>
+          You may guess as many times as you like.</p>
+        <p id="p2" class="instruct">You only have <strong>one</strong> chance to solve!</p>
+        <p id="p3" class="instruct">You will receive only <strong>one</strong> hint.</p>
+        <p id="p4" class="instruct">Enter only <strong>one</strong> letter into the 'Guess' box.</p>
+        <p id="p5" class="instruct">Click Play to begin!</p>
       </header>
       <div class="board">
       </div>
       <p id="hint"></p>
-      <button type="button" id="play">Play</button>
-      <button type="button" id="quit">Quit</button>
       <div class="Guess">
         <input type="text" id="guess" value="">
         <span id="error"></span>
         <button type="button" id="guessBtn">Guess</button>
-        <button type="button" id="solveBtn">Solve</button>
       </div>
+      <footer>
+        <button type="button" id="playBtn">Play</button>
+        <button type="button" id="solveBtn">Solve</button>
+        <button type="button" id="quitBtn">Quit</button>
+      </footer>
     </div>
     <script type="text/javascript" src="./wheel.js"></script>
   </body>
