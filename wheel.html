@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./wheel.css">
+    <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
+    <title>Wheel of Fortune</title>
+  </head>
+  <body>
+    <div id="container">
+      <header>
+        <p id="p1" class="instruct">Guess the letters in the phrase.</p>
+        <BR>
+        <p id="p2" class="instruct">You will receive one hint.</p>
+        <BR>
+        <p i="p3" class="instruct">Enter a letter into the 'Guess' box.</p>
+        <BR>
+        <p id="p4" class="instruct">Click Play to begin game.</p>
+      </header>
+      <div class="board">
+      </div>
+      <p id="hint"></p>
+      <button type="button" id="play">Play</button>
+      <button type="button" id="quit">Quit</button>
+      <div class="Guess">
+        <input type="text" id="guess" value="">
+        <button type="button" id="guessBtn">Guess</button>
+      </div>
+    </div>
+    <script type="text/javascript" src="./wheel.js"></script>
+  </body>
+</html>
