@@ -1,5 +1,6 @@
 var instruct=document.querySelectorAll(".instruct");
 var p5=document.querySelector("#p5");
+var win=document.querySelector("#win");
 var gameboard=document.querySelector(".board");
 var playBtn=document.querySelector("#playBtn");
 var quitBtn=document.querySelector("#quitBtn");
@@ -75,6 +76,7 @@ function generatePuzzle(puzzle, hint){
   //Display gameboard fields
   guessInput.style.visibility="visible";
   guessBtn.style.visibility="visible";
+  solveBtn.style.visibility="visible";
   hintPara.style.visibility="visible";
   return words.length;
 }
@@ -83,6 +85,25 @@ function generatePuzzle(puzzle, hint){
 function formatGuess(){
   guess=guessInput.value;
   guess=guess.toUpperCase();
+}
+
+function setAlert(msg, btn){
+  error.innerHTML=msg;
+  error.classList.add("errorAlert");
+  guessInput.classList.add("errorAlert");
+  if (btn=="guessBtn"){
+    solveBtn.style.visibility="hidden";
+  }
+  else{
+    guessBtn.style.visibility="hidden";
+  }
+}
+
+function clearAlert(){
+  error.innerHTML="";
+  error.classList.remove("errorAlert");
+  guessInput.classList.remove("errorAlert");
+  guessInput.value="";
 }
 
 /*  Change button value, style and add animation on wrong guess.  Don't allow user to solve. */
@@ -109,17 +130,40 @@ function removePuzzle(refLength){
   }
 }
 
-function revealLetter(guess){
-  //  Test length to see if there are any matches
-  var letterTile=document.querySelectorAll("."+guess);
-  if (letterTile.length==0){
-    badGuess();
+function revealLetter(btn, guess, solved){
+  //  Go here if call is from guess button
+  if (btn=="guessBtn"){
+    //  Test length to see if there are any letter matches
+    var letterTile=document.querySelectorAll("."+guess);
+    if (letterTile.length==0){
+      badGuess();
+    }
+    else{
+      //  Reveal letters if  there are matches
+      for(count=0; count<letterTile.length; count++){
+        letterTile[count].classList.add("reveal");
+        goodGuess();
+      }
+    }
   }
+  //  Go here if call is from solve button
   else{
-    //  Reveal letters if  there are matches
+    //  Find all letters
+    var letterTile=document.querySelectorAll(".letters");
+    //  Reveal All Letters on Solve and add event listener
+    if(solved=="true"){
+      var setClass="solve";
+    }
+    else{
+      var setClass="lose";
+    }
+    //  Reveal All Letters on Solve and add event listener
     for(count=0; count<letterTile.length; count++){
-      letterTile[count].classList.add("reveal");
-      goodGuess();
+      letterTile[count].classList.add(setClass);
+      //  Reset animation after event so it will fire again.
+      letterTile[count].addEventListener("animationend", function(event){
+        event.target.classList.remove(setClass);
+      })
     }
   }
   //  Clear last guess and return
@@ -130,6 +174,8 @@ function revealLetter(guess){
 playBtn.addEventListener("click", function(){
   /* Reset Guess button when cycling through game sets in case Play button is clicked when last guess was wrong  */
   goodGuess();
+  /* Clear alert when cycling through game sets in case Play button is clicked when last guess input not formatted correctly  */
+  clearAlert();
   var phrasesLength=Object.keys(phrases);
   phrasesLength=phrasesLength.length;
 
@@ -158,37 +204,33 @@ playBtn.addEventListener("click", function(){
   return currentPhrase, atIndex;
 })
 
+//  Close tab.  Not IE compatible
 quitBtn.addEventListener("click", function(){
   self.close();
 })
 
 guessBtn.addEventListener("click", function(){
-  console.log(event.target);
+  var evtID=event.target.id;
   formatGuess();
   var regExp=/^[a-z]$/i;
 //  Test if input is in correct format
   if(regExp.test(guess)!=true || guess.length!=1){
     //  Display error alert
-    error.innerHTML="Please enter single letter only.";
-    error.classList.add("errorAlert");
-    guessInput.classList.add("errorAlert");
-    solveBtn.style.visibility="hidden";
+    var alertMsg="Please enter single letter only.";
+    setAlert(alertMsg, evtID);
   }
   else{
-    error.innerHTML="";
-    error.classList.remove("errorAlert");
-    guessInput.classList.remove("errorAlert");
     /*  revealetter will test for actual match and flip over all matching letters and offer user opportunity to solve  */
-    console.log(revealLetter(guess));
-    guessInput.value="";
+    revealLetter(evtID, guess);
+    clearAlert();
   }
   return guess;
 })
 
 solveBtn.addEventListener("click", function(){
-  console.log(event.target);
+  var evtID=event.target.id;
   formatGuess();
-
+  //  Get and format game play set phrase.
   var puzzlePhrase=currentPhrase+".phrase";
   puzzlePhrase=eval(puzzlePhrase);
   puzzlePhrase=puzzlePhrase.toUpperCase();
@@ -200,20 +242,27 @@ solveBtn.addEventListener("click", function(){
   console.log("len- "+guess.length);
   if(regExp.test(guess)!=true || guess.length<1){
     //  Display error alert
-    error.innerHTML="Please enter the phrase to solve.";
-    error.classList.add("errorAlert");
-    guessInput.classList.add("errorAlert");
-    guessBtn.style.visibility="hidden";
+    var alertMsg="Please enter the phrase to solve.";
+    setAlert(alertMsg, evtID);
   }
   else{
-    error.innerHTML="";
-    error.classList.remove("errorAlert");
-    guessInput.classList.remove("errorAlert");
+    clearAlert();
+    //  Test if guess mathes phrase
     if(puzzlePhrase==guess){
-      alert("you won");
+      revealLetter(evtID, guess, "true");
+      win.play();
+      guessInput.style.visibility="hidden";
+      guessBtn.style.visibility="hidden";
+      solveBtn.style.visibility="hidden";
+      hintPara.style.visibility="hidden";
     }
     else{
-      alert("you loose");
+      lose.play();
+      revealLetter(evtID, guess, "false");
+      guessInput.style.visibility="hidden";
+      guessBtn.style.visibility="hidden";
+      solveBtn.style.visibility="hidden";
+      hintPara.style.visibility="hidden";
     }
 }
   return guess;
@@ -224,8 +273,11 @@ p5.addEventListener("animationend", function(event){
   playBtn.style.visibility="visible";
 })
 
+//  Reset animation after event so it will fire again.
 guessBtn.addEventListener("animationend", function(event){
   guessBtn.classList.remove("wrong");
 })
 
+
+//  Launch start of game.
 instructions();

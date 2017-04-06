@@ -126,6 +126,18 @@ header{
   animation: flipInY 5s;
 }
 
+.solve{
+  background-color: white;
+  color: black;
+  animation: flipInY 5s;
+}
+
+.lose{
+  background-color: white;
+  color: black;
+  animation: hinge 5s;
+}
+
 .wrong{
   animation: wobble 1s;
 }
