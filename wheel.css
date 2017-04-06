@@ -46,6 +46,15 @@ header{
   margin-left: 40%;
 }
 
+.errorAlert{
+  padding: 5px;
+  background-color: white;
+  font-size: larger;
+  color: red;
+  border: 2px solid red;
+  border-radius: 5px;
+}
+
 #playBtn, #guessBtn, #solveBtn{
     visibility: hidden;
     width: 100px;
@@ -118,7 +127,6 @@ header{
 }
 
 .wrong{
-  color: red;
   animation: wobble 1s;
 }
 
