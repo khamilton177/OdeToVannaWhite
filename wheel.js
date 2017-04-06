@@ -196,10 +196,8 @@ playBtn.addEventListener("click", function(){
   }
   var puzzle=currentPhrase+".phrase";
   puzzle=eval(puzzle);
-  console.log("puzzle- "+puzzle);
   var hint=currentPhrase+".hint";
   hint=eval(hint);
-  console.log("hint- "+hint);
   refLength=generatePuzzle(puzzle, hint);
   return currentPhrase, atIndex;
 })
@@ -234,12 +232,8 @@ solveBtn.addEventListener("click", function(){
   var puzzlePhrase=currentPhrase+".phrase";
   puzzlePhrase=eval(puzzlePhrase);
   puzzlePhrase=puzzlePhrase.toUpperCase();
-  console.log("puzzlePhrase- "+puzzlePhrase);
-
   var regExp=/[a-z\s]/i;
 //  Test if input is in correct format
-  console.log("test- "+regExp.test(guess));
-  console.log("len- "+guess.length);
   if(regExp.test(guess)!=true || guess.length<1){
     //  Display error alert
     var alertMsg="Please enter the phrase to solve.";
